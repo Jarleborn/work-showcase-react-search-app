@@ -1,3 +1,5 @@
+
+import { key } from '../conf/key'
 export const SEARCH_SUCCES = 'SEARCH_SUCCES'
 export const SEARCH_FAIL = 'SEARCH_FAIL'
 export const SEARCH_API = 'SEARCH_API'
@@ -24,11 +26,8 @@ export const searchAPI = (sValue) =>
   async function(dispatch) {
     dispatch(searchAPI())
     try {
-      const result = await fetch('link',{
-        method: 'post',
-        body: JSON.stringify({
-          sValue,
-        }),
+      const result = await fetch('https://www.googleapis.com/youtube/v3/search?type=&q='+sValue+'&maxResult=25&part=snippet&key='+key+'',{
+        method: 'get',
         headers: {
           'Accept': 'application/json',
           'content-type': 'applicaiton/json',
@@ -45,5 +44,5 @@ export const searchAPI = (sValue) =>
 
     } catch (e) {
       dispatch(searchFail(e))
-    } 
+    }
   }

@@ -5,7 +5,7 @@ class Field extends Component{
   constructor(props){
     super(props)
     this.state = {
-      searchValue: this.props.searchValue
+      searchValue: this.props.searchValue,
     }
   }
   render() {
@@ -13,22 +13,10 @@ class Field extends Component{
 
     return(
       <div class="sField">
-        <form id='searchForm' onSubmit={this.handleSubmit} autoComplete="off"
-          // <Textfield
-          //   label="Name"
-          //   required
-          //   value={searchValue}
-          //   onChange={this.handleChange('searchValue')}
-          //   expandable
-          //   expandableIcon="search"
-          //   onBlur={this.handleBlur}
-          // />
-
-        />
+        <p>HÄR ÄR ETT FORMULÄR</p>
 
       </div>
     )
   }
 }
-sdasdsa
 export default Field
