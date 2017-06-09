@@ -43,8 +43,8 @@ class Field extends Component{
           required
           value={searchValue}
           // onChange={this.handleChange('searchValue')}
-          expandable
-          expandableIcon="search"
+          // expandable
+          // expandableIcon="search"
           // onBlur={this.handleBlur}
         />
       </form>
