@@ -13,7 +13,7 @@ const initialState = {
 }
 
 function search(state = initialState, action) {
-
+  console.log(action)
   switch(action.type) {
     case SEARCH_SUCCES:
       return{

@@ -42,10 +42,11 @@ class Field extends Component{
           label="Name"
           required
           value={searchValue}
-          // onChange={this.handleChange('searchValue')}
+          onChange={this.handleChange('searchValue')}
           // expandable
           // expandableIcon="search"
           // onBlur={this.handleBlur}
+          // onSubmit={this.sc-e}
         />
       </form>
       </div>
@@ -61,7 +62,8 @@ const mapStateToProps = state => ({
 
 const mapDispatchToProps = dispatch => ({
   doSearch: (searchValue) => dispatch(searchAPI(searchValue)),
-  searchUserFailure: () => dispatch(searchFail()),
+  searchFailure: () => dispatch(searchFail()),
+  searchSucces: () => dispatch(searchSucces()),
 })
 export default connect(
   mapStateToProps,

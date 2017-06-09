@@ -24,7 +24,7 @@ export const searchFail = ({err}) => ({
 
 export const searchAPI = (sValue) =>
   async function(dispatch) {
-    dispatch(searchAPI())
+    dispatch(searchAPi())
     try {
       const result = await fetch('https://www.googleapis.com/youtube/v3/search?type=&q='+sValue+'&maxResult=25&part=snippet&key='+key+'',{
         method: 'get',
@@ -35,14 +35,16 @@ export const searchAPI = (sValue) =>
       })
 
       const json = await result.json()
+      console.log(json)
       const { res } = json
-      if (res.length > 0) {
+      if (json.kind) {
         dispatch(searchSucces({res}))
       }else {
-        dispatch(searchFail(res.code))
+        dispatch(searchFail({res}))
       }
 
     } catch (e) {
+      console.log(e)
       dispatch(searchFail(e))
     }
   }
