@@ -12,6 +12,7 @@ export const searchAPi = () => ({
 export const searchSucces = (res) => ({
   type: SEARCH_SUCCES,
   payload: res,
+  showResult: true,
 })
 
 export const searchFail = ({err}) => ({
@@ -41,7 +42,6 @@ export const searchAPI = (sValue) =>
       // const { res } = json
       // console.log('res',json);
       if (json.kind) {
-        console.log('json',json)
         dispatch(searchSucces({json}))
       }else {
         dispatch(searchFail({json}))

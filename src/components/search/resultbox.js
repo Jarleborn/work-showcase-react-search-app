@@ -2,13 +2,15 @@ import React from 'react'
 
 const ResultBox = (props) => {
   const { searchResults } = props
-
+  console.log('props2 ',props)
   return(
     <ol>
-      {  searchResults.items.map(function (item) {
-        console.log(item);
+      {  props.searchResults.map(function (item) {
         return(
-          <li>{item}</li>
+          <li>
+            <img src={'' + item.snippet.thumbnails.default.url} />
+            <a href={'https://www.youtube.com/watch?v=' + item.id.videoId}>{item.snippet.title} </a>
+          </li>
         )
       })
     }

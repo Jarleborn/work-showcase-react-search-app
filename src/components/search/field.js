@@ -4,13 +4,12 @@ import { searchAPI, searchSucces, searchFail} from '../../lib/actions/search-act
 import ResultBox from './resultbox'
 class Field extends Component{
   constructor(props){
+    console.log('proppp',props)
     super(props)
     this.state = {
       searchValue: this.props.searchValue,
-      searchResults: {
-        items: this.props.searchResults,
-      },
-      showResult: false,
+      searchResults: this.props.searchResults,
+      showResult: this.props.showResult,
     }
   }
 
@@ -18,7 +17,6 @@ class Field extends Component{
     e.preventDefault()
   }
   handleChange = key => {
-    console.log(key)
     return function(e) {
       const state = {}
       const props = this.props
@@ -38,7 +36,7 @@ class Field extends Component{
     }.bind(this)
   }
   render() {
-    const { searchValue, searchResults } = this.state
+    const { searchValue, searchResults, showResult } = this.state
     console.log(this.props);
     return(
       <div class="sField">
@@ -50,16 +48,18 @@ class Field extends Component{
           onChange={this.handleChange('searchValue')}
         />
       </form>
-      <ResultBox searchResults={searchResults} />
+      { this.props.showResult &&
+        <ResultBox searchResults={this.props.searchResults.json.items} />
+      }
       </div>
     )
   }
 }
-
 const mapStateToProps = state => ({
   isSearching: state.search.isSearching,
   searchResults: state.search.searchResults,
   failure: state.search.failure,
+  showResult: state.search.showResult,
 })
 
 const mapDispatchToProps = dispatch => ({
