@@ -1,5 +1,6 @@
-
 import { key } from '../conf/key'
+
+
 export const SEARCH_SUCCES = 'SEARCH_SUCCES'
 export const SEARCH_FAIL = 'SEARCH_FAIL'
 export const SEARCH_API = 'SEARCH_API'
@@ -42,6 +43,7 @@ export const searchAPI = (sValue) =>
       // const { res } = json
       // console.log('res',json);
       if (json.kind) {
+
         dispatch(searchSucces({json}))
       }else {
         dispatch(searchFail({json}))

@@ -2,7 +2,6 @@ import React from 'react'
 
 const ResultBox = (props) => {
   const { searchResults } = props
-  console.log('props2 ',props)
   return(
     <ol>
       {  props.searchResults.map(function (item) {

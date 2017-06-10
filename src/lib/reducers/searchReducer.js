@@ -21,7 +21,8 @@ function search(state = initialState, action) {
         isSearching: false,
         isDoneSearching: true,
         searchResults: action.payload,
-        failure: false,        
+        failure: false,
+        showResult: true,
       }
     case SEARCH_FAIL:
       return{

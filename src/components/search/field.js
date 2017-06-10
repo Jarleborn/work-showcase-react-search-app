@@ -2,15 +2,25 @@ import React, { Component } from 'react'
 import { connect } from 'react-redux'
 import { searchAPI, searchSucces, searchFail} from '../../lib/actions/search-action'
 import ResultBox from './resultbox'
+
+
 class Field extends Component{
+
   constructor(props){
-    console.log('proppp',props)
     super(props)
     this.state = {
       searchValue: this.props.searchValue,
       searchResults: this.props.searchResults,
       showResult: this.props.showResult,
     }
+  }
+
+  saveToRecent = sValue => {
+    let recentData = []
+    recentData.push(localStorage.recent)
+    recentData.push(sValue)
+    localStorage.recent = recentData
+    return true
   }
 
   handleSubmit = e => {
@@ -28,18 +38,21 @@ class Field extends Component{
 
       if (e.target.value !== ''){
         this.promise = setTimeout(function(){
+          let recentData = []
+          recentData.push(localStorage.recent)
+          recentData.push(state.searchValue)
+          localStorage.recent = recentData
+          console.log(localStorage.recent);
           props.doSearch(state.searchValue)
         }, 500)
-      }else{
-        this.props.endSearch()
       }
     }.bind(this)
   }
   render() {
     const { searchValue, searchResults, showResult } = this.state
-    console.log(this.props);
     return(
       <div class="sField">
+      <span> {localStorage.recent} </span>
       <form id='searchForm' onSubmit={this.handleSubmit} autoComplete="off">
         <input
           label="Name"
