@@ -3,16 +3,15 @@ import { key } from '../conf/key'
 export const SEARCH_SUCCES = 'SEARCH_SUCCES'
 export const SEARCH_FAIL = 'SEARCH_FAIL'
 export const SEARCH_API = 'SEARCH_API'
+export const END_SEARCH = 'END_SEARCH'
 
 export const searchAPi = () => ({
   type: SEARCH_API,
 })
 
-export const searchSucces = ({res}) => ({
+export const searchSucces = (res) => ({
   type: SEARCH_SUCCES,
-  payload: {
-    res,
-  },
+  payload: res,
 })
 
 export const searchFail = ({err}) => ({
@@ -20,6 +19,9 @@ export const searchFail = ({err}) => ({
   payload: {
     err,
   },
+})
+export const endSearch = () => ({
+  type: END_SEARCH,
 })
 
 export const searchAPI = (sValue) =>
@@ -35,16 +37,18 @@ export const searchAPI = (sValue) =>
       })
 
       const json = await result.json()
-      console.log(json)
-      const { res } = json
+      // console.log(json);
+      // const { res } = json
+      // console.log('res',json);
       if (json.kind) {
-        dispatch(searchSucces({res}))
+        console.log('json',json)
+        dispatch(searchSucces({json}))
       }else {
-        dispatch(searchFail({res}))
+        dispatch(searchFail({json}))
       }
 
     } catch (e) {
-      console.log(e)
+      // console.log(e)
       dispatch(searchFail(e))
     }
   }

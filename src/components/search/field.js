@@ -1,12 +1,16 @@
 import React, { Component } from 'react'
 import { connect } from 'react-redux'
 import { searchAPI, searchSucces, searchFail} from '../../lib/actions/search-action'
-
+import ResultBox from './resultbox'
 class Field extends Component{
   constructor(props){
     super(props)
     this.state = {
       searchValue: this.props.searchValue,
+      searchResults: {
+        items: this.props.searchResults,
+      },
+      showResult: false,
     }
   }
 
@@ -14,6 +18,7 @@ class Field extends Component{
     e.preventDefault()
   }
   handleChange = key => {
+    console.log(key)
     return function(e) {
       const state = {}
       const props = this.props
@@ -33,8 +38,8 @@ class Field extends Component{
     }.bind(this)
   }
   render() {
-    const { searchValue } = this.state
-
+    const { searchValue, searchResults } = this.state
+    console.log(this.props);
     return(
       <div class="sField">
       <form id='searchForm' onSubmit={this.handleSubmit} autoComplete="off">
@@ -43,12 +48,9 @@ class Field extends Component{
           required
           value={searchValue}
           onChange={this.handleChange('searchValue')}
-          // expandable
-          // expandableIcon="search"
-          // onBlur={this.handleBlur}
-          // onSubmit={this.sc-e}
         />
       </form>
+      <ResultBox searchResults={searchResults} />
       </div>
     )
   }

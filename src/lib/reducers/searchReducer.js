@@ -13,17 +13,23 @@ const initialState = {
 }
 
 function search(state = initialState, action) {
-  console.log(action)
+  console.log('state',state)
+  console.log('is', initialState);
+  console.log('action', action);
   switch(action.type) {
     case SEARCH_SUCCES:
+      console.log('succ');
+      console.log('HHHHHHHHHHHÖÖÖÖÖÖÖÖÖÖÖÖÖÖÖÖÖÖÖÖR BORDET DET STÅ SAKER -------------->',action);
       return{
         ...state,
         isSearching: false,
         isDoneSearching: true,
-        searchResults: action.payload.results,
+        searchResults: action.payload,
         failure: false,
+        showResult: true,
       }
     case SEARCH_FAIL:
+      console.log('fail');
       return{
         ...state,
         isSearching: false,
@@ -32,12 +38,14 @@ function search(state = initialState, action) {
       }
 
     case SEARCH_API:
+      console.log('search');
       return{
         ...state,
         isSearching: true,
       }
     default:
-      return initialState
+      console.log('def')
+      return state
   }
 }
 export default search

@@ -1,6 +1,7 @@
 import { combineReducers } from 'redux'
 import { routerReducer } from 'react-router-redux'
 import search from './searchReducer'
+
 const appReducer = combineReducers({
   routing: routerReducer,
   search,
