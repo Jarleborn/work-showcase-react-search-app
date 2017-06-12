@@ -2,6 +2,7 @@ import React, { Component } from 'react'
 import { connect } from 'react-redux'
 import { searchAPI, searchSucces, searchFail} from '../../lib/actions/search-action'
 import ResultBox from './resultbox'
+import RecentItem from './recentItem'
 
 
 class Field extends Component{
@@ -25,42 +26,63 @@ class Field extends Component{
 
   handleSubmit = e => {
     e.preventDefault()
+    // this.props.doSearch(this.state.searchValue)
   }
   handleChange = key => {
+    // let that = this
+    // console.log(key);
+    // return function(e) {
+    //   const state = {}
+    //   console.log(e)
+    //   // const props = this.props
+    //   state['searchValue'] = key
+    //   that.setState({'searchValue': state })
+    // }
     return function(e) {
       const state = {}
       const props = this.props
       state[key] = e.target.value
-      this.setState(state)
+      this.setState({'searchValue': state })
 
       if (this.promise)
         clearInterval(this.promise)
 
       if (e.target.value !== ''){
-        this.promise = setTimeout(function(){
-          let recentData = []
-          recentData.push(localStorage.recent)
-          recentData.push(state.searchValue)
-          localStorage.recent = recentData
-          console.log(localStorage.recent);
-          props.doSearch(state.searchValue)
-        }, 500)
+        // this.promise = setTimeout(function(){
+        let recentData = []
+        recentData = localStorage.recent.split(',')
+        recentData.push(state.searchValue)
+        localStorage.recent = recentData
+        console.log(localStorage.recent.split(','))
+        props.doSearch(state.searchValue)
+        // }, 500)
       }
     }.bind(this)
   }
+
   render() {
-    const { searchValue, searchResults, showResult } = this.state
+    const { searchValue } = this.state
+    console.log(this)
+    let that = this
     return(
       <div class="sField">
-      <span> {localStorage.recent} </span>
+      <ul>
+        { localStorage.recent.split(',').reverse().map(function (item) {
+          return(
+            <a> <RecentItem value={item} searchValue={item} method={that.handleSubmit} /> </a>
+          )
+        })
+        }
+      </ul>
       <form id='searchForm' onSubmit={this.handleSubmit} autoComplete="off">
         <input
           label="Name"
           required
           value={searchValue}
-          onChange={this.handleChange('searchValue')}
+          onClick={this.handleChange(searchValue)}
         />
       </form>
+      // <button type="submit" > search </button>
       { this.props.showResult &&
         <ResultBox searchResults={this.props.searchResults.json.items} />
       }
