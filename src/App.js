@@ -11,8 +11,8 @@ class App extends Component {
     return (
       <div className="App row">
 
-        <Navbar brand='Serch Stuff' right></Navbar>
-        <h6> Skriv i rutan och tryck på enter så söker du lätt och ledigt på youtube</h6>
+        <Navbar brand='Search stackoverflow' right></Navbar>
+        <h6> To search just type in the box and press enter, but keep in mind that the application only look for matches in titels</h6>
         <Field />
 
 
