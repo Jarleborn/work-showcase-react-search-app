@@ -1,9 +1,8 @@
 import React, { Component } from 'react'
-import { connect } from 'react-redux'
-import { searchAPI, searchSucces, searchFail} from '../../lib/actions/search-action'
 import ResultBox from './resultbox'
 import RecentItem from './recentItem'
-
+import { key } from '../../lib/conf/key'
+import { Col } from 'react-materialize'
 
 class Field extends Component{
 
@@ -14,95 +13,85 @@ class Field extends Component{
       searchResults: this.props.searchResults,
       showResult: this.props.showResult,
     }
+    this.handleChange = this.handleChange.bind(this)
+    this.handleSubmit = this.handleSubmit.bind(this)
   }
-
-  saveToRecent = sValue => {
+  handleRecent = newestRecent => {
     let recentData = []
-    recentData.push(localStorage.recent)
-    recentData.push(sValue)
+
+    if (localStorage.recent) {
+      recentData = localStorage.recent.split(',')
+    }
+
+    if (recentData.length < 10) {
+      recentData.push(newestRecent)
+    } else{
+      for (let i = 0; i < recentData.length; i++) {
+        if (i < 9) {
+          recentData[i] = recentData[i + 1]
+        } else{
+          recentData[i] = newestRecent
+        }
+      }
+    }
     localStorage.recent = recentData
-    return true
+  }
+  search = value => {
+    console.log(value)
+    let then = this
+    this.handleRecent(value)
+    fetch('https://www.googleapis.com/youtube/v3/search?type=&q='+value+'&maxResult=25&part=snippet&key='+key+'',{
+      method: 'get',
+      headers: {
+        'Accept': 'application/json',
+        'content-type': 'applicaiton/json',
+      },
+    })
+    .then(function (res) {
+      return res.json()
+    })
+    .then(function (resJson) {
+      then.setState({result: resJson})
+      then.setState({showResult: true})
+    })
   }
 
   handleSubmit = e => {
     e.preventDefault()
-    // this.props.doSearch(this.state.searchValue)
+    this.search(this.state.searchValue)
+
   }
-  handleChange = key => {
-    // let that = this
-    // console.log(key);
-    // return function(e) {
-    //   const state = {}
-    //   console.log(e)
-    //   // const props = this.props
-    //   state['searchValue'] = key
-    //   that.setState({'searchValue': state })
-    // }
-    return function(e) {
-      const state = {}
-      const props = this.props
-      state[key] = e.target.value
-      this.setState({'searchValue': state })
-
-      if (this.promise)
-        clearInterval(this.promise)
-
-      if (e.target.value !== ''){
-        // this.promise = setTimeout(function(){
-        let recentData = []
-        recentData = localStorage.recent.split(',')
-        recentData.push(state.searchValue)
-        localStorage.recent = recentData
-        console.log(localStorage.recent.split(','))
-        props.doSearch(state.searchValue)
-        // }, 500)
-      }
-    }.bind(this)
+  handleChange = event => {
+    this.setState({searchValue: event.target.value})
   }
 
   render() {
     const { searchValue } = this.state
-    console.log(this)
-    let that = this
     return(
-      <div class="sField">
-      <ul>
-        { localStorage.recent.split(',').reverse().map(function (item) {
-          return(
-            <a> <RecentItem value={item} searchValue={item} method={that.handleSubmit} /> </a>
-          )
-        })
-        }
-      </ul>
-      <form id='searchForm' onSubmit={this.handleSubmit} autoComplete="off">
-        <input
-          label="Name"
-          required
-          value={searchValue}
-          onClick={this.handleChange(searchValue)}
-        />
-      </form>
-      // <button type="submit" > search </button>
-      { this.props.showResult &&
-        <ResultBox searchResults={this.props.searchResults.json.items} />
+      <div className="sField">
+      <Col s={4}>
+        <b> Recent searches </b>
+        <RecentItem value={localStorage.recent} method={this.search} />
+      </Col>
+      <Col s={6}>
+        <form id='searchForm' onSubmit={this.handleSubmit} autoComplete="off">
+          <input
+            label="Name"
+            required
+            onChange={this.handleChange}
+            value={searchValue}
+          />
+        </form>
+
+      { this.state.showResult &&
+
+          <ResultBox searchResults={this.state.result.items} />
+
       }
+      </Col>
       </div>
     )
   }
 }
-const mapStateToProps = state => ({
-  isSearching: state.search.isSearching,
-  searchResults: state.search.searchResults,
-  failure: state.search.failure,
-  showResult: state.search.showResult,
-})
 
-const mapDispatchToProps = dispatch => ({
-  doSearch: (searchValue) => dispatch(searchAPI(searchValue)),
-  searchFailure: () => dispatch(searchFail()),
-  searchSucces: () => dispatch(searchSucces()),
-})
-export default connect(
-  mapStateToProps,
-  mapDispatchToProps
-)(Field)
+export default Field

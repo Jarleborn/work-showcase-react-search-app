@@ -1,34 +1,29 @@
 import React from 'react'
-
+import { Col, Card, Row } from 'react-materialize'
 const ResultBox = (props) => {
-  const { searchResults } = props
   return(
-    <ol>
-      {  props.searchResults.map(function (item) {
-        return(
-          <li>
-            <img src={'' + item.snippet.thumbnails.default.url} />
-            <a href={'https://www.youtube.com/watch?v=' + item.id.videoId}>{item.snippet.title} </a>
-          </li>
-        )
-      })
-    }
-    </ol>
+    <Col s={6}>
+      <ol>
+        {  props.searchResults.map(function (item) {
+          return(
+            <Card>
+              <li>
+                <Row>
+                  <Col s={4}>
+                    <img src={'' + item.snippet.thumbnails.default.url} />
+                  </Col>
+                  <Col s={8}>
+                    <a target='_blank' href={'https://www.youtube.com/watch?v=' + item.id.videoId}>{item.snippet.title} </a>
+                  </Col>
+                </Row>
+              </li>
+            </Card>
+          )
+        })
+      }
+      </ol>
+    </Col>
   )
 }
-
-// const SearchResults = (props) => {
-//   const { searchResults } = props
-//   return(
-//     <ol>
-//       {for (var i = 0; i < props.items.length; i++) {
-//         return(
-//           <li>props.items[i].snippet.title</li>
-//         )
-//       }
-//     }
-//     </ol>
-//   )
-// }
 
 export default ResultBox
