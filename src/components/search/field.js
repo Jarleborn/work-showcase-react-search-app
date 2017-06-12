@@ -1,7 +1,6 @@
 import React, { Component } from 'react'
 import ResultBox from './resultbox'
 import RecentItem from './recentItem'
-import { key } from '../../lib/conf/key'
 import { Col } from 'react-materialize'
 
 class Field extends Component{
@@ -37,15 +36,12 @@ class Field extends Component{
     localStorage.recent = recentData
   }
   search = value => {
-    console.log(value)
     let then = this
     this.handleRecent(value)
-    fetch('https://www.googleapis.com/youtube/v3/search?type=&q='+value+'&maxResult=25&part=snippet&key='+key+'',{
+    // fetch('https://www.googleapis.com/youtube/v3/search?type=&q='+value+'&maxResult=20&part=snippet&key='+key+'',{
+    fetch('http://api.stackexchange.com/2.2/search?order=desc&sort=activity&intitle='+value+'&site=stackoverflow',{
       method: 'get',
-      headers: {
-        'Accept': 'application/json',
-        'content-type': 'applicaiton/json',
-      },
+
     })
     .then(function (res) {
       return res.json()

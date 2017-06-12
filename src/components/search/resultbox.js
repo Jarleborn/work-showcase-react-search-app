@@ -4,18 +4,19 @@ const ResultBox = (props) => {
   return(
     <Col s={6}>
       <ol>
+        {
+          props.searchResults.length === 0 &&
+            <b> We could not find an answer for that, keep in mind that we just search the title of questions </b>
+          
+        }
         {  props.searchResults.map(function (item) {
+
           return(
             <Card>
               <li>
-                <Row>
-                  <Col s={4}>
-                    <img src={'' + item.snippet.thumbnails.default.url} />
-                  </Col>
-                  <Col s={8}>
-                    <a target='_blank' href={'https://www.youtube.com/watch?v=' + item.id.videoId}>{item.snippet.title} </a>
-                  </Col>
-                </Row>
+                <Row> {item.title} </Row>
+                <Row> <a target='_blank' href={item.link}> Read the whole question </a> </Row>
+                {item.is_answered && <b>Answered</b>}
               </li>
             </Card>
           )
